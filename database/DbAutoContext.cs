@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceStationApi.database.entities;
 
-namespace ServiceStationApi.Models;
+namespace ServiceStationApi.database;
 
 public partial class DbAutoContext : DbContext
 {

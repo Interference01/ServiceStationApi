@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ServiceStationApi.Models;
+namespace ServiceStationApi.database.entities;
 
 public partial class CarWork
 {

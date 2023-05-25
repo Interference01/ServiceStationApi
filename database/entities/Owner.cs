@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ServiceStationApi.Models;
+﻿namespace ServiceStationApi.database.entities;
 
 public partial class Owner
 {
@@ -11,5 +8,5 @@ public partial class Owner
 
     public DateTime RegistrationDate { get; set; }
 
-    public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
+    public virtual ICollection<Car>? Cars { get; set; }
 }
