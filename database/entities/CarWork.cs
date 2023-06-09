@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace ServiceStationApi.database.entities;
 
-namespace ServiceStationApi.database.entities;
-
-public partial class CarWork
+public partial class CarWork // here
 {
     public int IdWork { get; set; }
 
     public int IdAuto { get; set; }
 
-    public int? Mileage { get; set; }
+    public string Mileage { get; set; }
 
-    public string DescriptionWork { get; set; } = null!;
+    public string DescriptionWork { get; set; }
 
     public DateTime? Date { get; set; }
 
-    public string? Note { get; set; }
+    public string Note { get; set; }
+
+    public virtual Car IdAutoNavigation { get; set; }
 }

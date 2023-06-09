@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using ServiceStationApi.database.entities;
 
 namespace ServiceStationApi.database;
@@ -31,7 +33,9 @@ public partial class DbAutoContext : DbContext
 
             entity.Property(e => e.IdAuto).HasColumnName("idAuto");
             entity.Property(e => e.IdUser).HasColumnName("idUser");
-            entity.Property(e => e.NameAuto).HasMaxLength(70);
+            entity.Property(e => e.NameAuto)
+                .IsRequired()
+                .HasMaxLength(70);
             entity.Property(e => e.VinCode)
                 .HasMaxLength(20)
                 .HasColumnName("VIN Code");
@@ -53,10 +57,17 @@ public partial class DbAutoContext : DbContext
             entity.Property(e => e.IdWork).HasColumnName("idWork");
             entity.Property(e => e.Date).HasColumnType("date");
             entity.Property(e => e.DescriptionWork)
+                .IsRequired()
                 .HasMaxLength(250)
                 .HasColumnName("Description Work");
             entity.Property(e => e.IdAuto).HasColumnName("idAuto");
+            entity.Property(e => e.Mileage).HasMaxLength(50);
             entity.Property(e => e.Note).HasMaxLength(500);
+
+            entity.HasOne(d => d.IdAutoNavigation).WithMany(p => p.CarWorks)
+                .HasForeignKey(d => d.IdAuto)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CarWorks_Cars");
         });
 
         modelBuilder.Entity<Owner>(entity =>
@@ -66,7 +77,9 @@ public partial class DbAutoContext : DbContext
             entity.HasIndex(e => e.NameOwner, "DB_TableUsers_NameOwner").IsUnique();
 
             entity.Property(e => e.IdUser).HasColumnName("idUser");
-            entity.Property(e => e.NameOwner).HasMaxLength(70);
+            entity.Property(e => e.NameOwner)
+                .IsRequired()
+                .HasMaxLength(70);
             entity.Property(e => e.RegistrationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

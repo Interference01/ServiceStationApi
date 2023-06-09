@@ -4,9 +4,9 @@ public partial class Owner
 {
     public int IdUser { get; set; }
 
-    public string NameOwner { get; set; } = null!;
+    public string NameOwner { get; set; }
 
     public DateTime RegistrationDate { get; set; }
 
-    public virtual ICollection<Car>? Cars { get; set; }
+    public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
 }

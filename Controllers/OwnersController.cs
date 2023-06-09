@@ -8,18 +8,17 @@ namespace ServiceStationApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ServiceStationController : Controller
+    public class OwnersController : Controller
     {
         private readonly DbAutoContext dbContext;
 
-        public ServiceStationController(DbAutoContext dbContext)
+        public OwnersController(DbAutoContext dbContext)
         {
             this.dbContext = dbContext;  
         }
 
 
-
-        [HttpGet("allOwners")]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllOwners()
         {
             var list = await dbContext.Owners.ToListAsync();
@@ -27,7 +26,7 @@ namespace ServiceStationApi.Controllers
             return Ok(list);
         }
 
-        [HttpGet("searchOwner")]
+        [HttpGet("searchByName")]
         public async Task<IActionResult> SearchOwnersByName(string letters)
         {
             var owners = await dbContext.Owners.Where(x => x.NameOwner.StartsWith(letters)).ToListAsync();
@@ -35,7 +34,7 @@ namespace ServiceStationApi.Controllers
             return Ok(owners);
         }
 
-        [HttpPost("Owner")]
+        [HttpPost]
         public async Task<IActionResult> AddOwner([FromBody] OwnerDTO ownerDTO)
         {
             Owner owner = new Owner()
@@ -50,15 +49,14 @@ namespace ServiceStationApi.Controllers
             return CreatedAtAction("SearchOwnersByName", new { owner.NameOwner} , owner);
         }
 
-        [HttpPut("Owner")]
+        [HttpPut]
         public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerDTO updateOwner)
         {
             var existingOwner = await dbContext.Owners.FindAsync(id);
 
             if (existingOwner == null)
-            {
-                return NotFound();
-            }
+                return NotFound("Owner not found");
+
 
             existingOwner.NameOwner = updateOwner.NameOwner;
             existingOwner.RegistrationDate = updateOwner.RegistrationDate;
@@ -68,15 +66,14 @@ namespace ServiceStationApi.Controllers
             return Ok(existingOwner);
         }
 
-        [HttpDelete("Owner")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteOwner(int idOwner )
         {
             var deleteOwner = await dbContext.Owners.FindAsync(idOwner);
 
             if (deleteOwner == null)
-            {
-                return NotFound();
-            }
+                return NotFound("Owner not found");
+            
 
             dbContext.Owners.Remove(deleteOwner);
             await dbContext.SaveChangesAsync();

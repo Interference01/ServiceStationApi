@@ -8,9 +8,11 @@ public partial class Car
 
     public DateTime YearsOfManufacture { get; set; }
 
-    public string NameAuto { get; set; } = null!;
+    public string NameAuto { get; set; }
 
-    public string? VinCode { get; set; }
+    public string VinCode { get; set; }
 
-    public virtual Owner IdUserNavigation { get; set; } = null!;
+    public virtual ICollection<CarWork> CarWorks { get; set; } = new List<CarWork>();
+
+    public virtual Owner IdUserNavigation { get; set; }
 }
