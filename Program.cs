@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ServiceStationApi.Models;
+using ServiceStationApi.database;
 
 namespace ServiceStationApi
 {
