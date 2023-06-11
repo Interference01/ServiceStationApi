@@ -1,6 +1,6 @@
 ﻿namespace ServiceStationApi.database.entities;
 
-public partial class CarWork // here
+public partial class CarWork 
 {
     public int IdWork { get; set; }
 
