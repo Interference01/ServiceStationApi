@@ -1,6 +1,6 @@
 ﻿namespace ServiceStationApi.models
 {
-    public class CarDTO
+    public class CarDTOGet
     {
         public int idAuto { get; set; }
         public string NameAuto { get; set; }

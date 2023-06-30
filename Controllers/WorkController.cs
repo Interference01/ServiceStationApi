@@ -41,7 +41,7 @@ namespace ServiceStationApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddWork(int idAuto, [FromBody] CarWorkDTO carDTO)
+        public async Task<IActionResult> AddWork(int idAuto, [FromBody] CarWorkDTOPost carDTO)
         {
             var car = await dbContext.Cars.AnyAsync(x => x.IdAuto == idAuto);
 
@@ -52,10 +52,10 @@ namespace ServiceStationApi.Controllers
             CarWork newCar = new CarWork()
             {
                 IdAuto = idAuto,
-                DescriptionWork = carDTO.DescriptionWork,
+                DescriptionWork = carDTO.Description,
                 Mileage = carDTO.Mileage,
                 Note = carDTO.Note,
-                Date = carDTO.Date
+                Date = HandlerDate.ConvertStrToDate(carDTO.Date)
             };
 
             await dbContext.CarWorks.AddAsync(newCar);
@@ -65,7 +65,7 @@ namespace ServiceStationApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCarWork(int idWork, [FromBody] CarWorkDTO updateCarWork)
+        public async Task<IActionResult> UpdateCarWork(int idWork, [FromBody] CarWorkDTOPost updateCarWork)
         {
             var existingCarWork = await dbContext.CarWorks.FindAsync(idWork);
 
@@ -73,8 +73,8 @@ namespace ServiceStationApi.Controllers
                 return NotFound("Car work not found");
 
 
-            existingCarWork.DescriptionWork = updateCarWork.DescriptionWork;
-            existingCarWork.Date = updateCarWork.Date;
+            existingCarWork.DescriptionWork = updateCarWork.Description;
+            existingCarWork.Date = HandlerDate.ConvertStrToDate(updateCarWork.Date);
             existingCarWork.Note = updateCarWork.Note;
             existingCarWork.Mileage = updateCarWork.Mileage;
 

@@ -40,6 +40,7 @@ namespace ServiceStationApi.Controllers
             Owner owner = new Owner()
             {
                 NameOwner = ownerDTO.NameOwner,
+                RegistrationDate = HandlerDate.ConvertStrToDate(ownerDTO.RegistrationDate)
             };
 
 
@@ -50,16 +51,16 @@ namespace ServiceStationApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateOwner(int id, [FromBody] OwnerDTO updateOwner)
+        public async Task<IActionResult> UpdateOwner(int idOwner, [FromBody] OwnerDTO updateOwner)
         {
-            var existingOwner = await dbContext.Owners.FindAsync(id);
+            var existingOwner = await dbContext.Owners.FindAsync(idOwner);
 
             if (existingOwner == null)
                 return NotFound("Owner not found");
 
 
             existingOwner.NameOwner = updateOwner.NameOwner;
-            existingOwner.RegistrationDate = updateOwner.RegistrationDate;
+            existingOwner.RegistrationDate = HandlerDate.ConvertStrToDate(updateOwner.RegistrationDate);
 
             await dbContext.SaveChangesAsync();
 

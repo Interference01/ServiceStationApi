@@ -29,6 +29,8 @@ namespace ServiceStationApi
 
             app.UseHttpsRedirection();
 
+            app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseAuthorization();
 
 

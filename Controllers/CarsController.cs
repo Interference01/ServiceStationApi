@@ -27,7 +27,7 @@ namespace ServiceStationApi.Controllers
                 return NotFound("This owner has no registered cars");
 
 
-            var carsDTO = cars.Cars.ToList().Select(x => new CarDTO()
+            var carsDTO = cars.Cars.ToList().Select(x => new CarDTOGet()
             {
                 idAuto = x.IdAuto,
                 NameAuto = x.NameAuto,
@@ -39,7 +39,7 @@ namespace ServiceStationApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCar(int idOwner,[FromBody] CarDTO carDTO)
+        public async Task<IActionResult> AddCar(int idOwner,[FromBody] CarDTOPost carDTO )
         {
             var owner = await dbContext.Owners.AnyAsync(x => x.IdUser == idOwner);
 
@@ -52,7 +52,7 @@ namespace ServiceStationApi.Controllers
                 IdUser = idOwner,
                 NameAuto = carDTO.NameAuto,
                 VinCode = carDTO.VINCode,
-                YearsOfManufacture= carDTO.YearsOfManufacture
+                YearsOfManufacture = HandlerDate.ConvertStrToDate(carDTO.YearsOfManufacture)
             };
 
             await dbContext.Cars.AddAsync(newCar);
@@ -62,7 +62,7 @@ namespace ServiceStationApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> updateCar(int idAuto, [FromBody] CarDTO updateCar)
+        public async Task<IActionResult> updateCar(int idAuto, [FromBody] CarDTOPost updateCar)
         {
             var existingCar = await dbContext.Cars.FindAsync(idAuto);
 
@@ -71,7 +71,7 @@ namespace ServiceStationApi.Controllers
 
 
             existingCar.NameAuto = updateCar.NameAuto;
-            existingCar.YearsOfManufacture = updateCar.YearsOfManufacture;
+            existingCar.YearsOfManufacture = HandlerDate.ConvertStrToDate(updateCar.YearsOfManufacture);
             existingCar.VinCode = updateCar.VINCode;
 
             await dbContext.SaveChangesAsync();
